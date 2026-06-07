@@ -909,10 +909,18 @@ function regexExtractIntake(text: string): ExtractedIntake {
 
 function detectMissingInfo(intake: ExtractedIntake, text: string): string[] {
   const missing: string[] = [];
-  if (!intake.child_name || /\[blank\]/i.test(text)) missing.push("child name");
-  if (!intake.dob_or_age || /DOB:\s*\[blank\]/i.test(text))
+  if (!intake.child_name || /Child:\s*\[blank\]/i.test(text))
+    missing.push("child name");
+  if (
+    !intake.dob_or_age ||
+    isBlankPlaceholder(intake.dob_or_age) ||
+    /DOB:\s*\[blank\]/i.test(text)
+  )
     missing.push("date of birth");
-  if (!intake.parent_contact || /guardian:\s*\[blank\]/i.test(text))
+  if (
+    !intake.parent_contact ||
+    /Parent\/guardian:\s*\[blank\]/i.test(text)
+  )
     missing.push("parent/guardian contact");
   if (
     !intake.payer ||

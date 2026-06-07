@@ -124,7 +124,7 @@ You can omit the flags — they default to the paths above.
 Items are processed **one at a time**. For each inbox item, inside `withItemContext(item.id, ...)`:
 
 1. **Safety pre-scan** — keyword check for abuse/harm signals; forces `safeguarding` / `P0` before anything else runs
-2. **LLM extraction** — one API call parses the message into a structured plan (classification, urgency, intake fields, workflow type)
+2. **LLM extraction** — one API call parses the message into a structured plan (classification, urgency, intake fields, workflow type); post-extraction overrides fix `missing_paperwork` and same-day scheduling; `detectMissingInfo` uses field-specific `[blank]` checks (a blank DOB does not flag child name)
 3. **Code orchestration** — a workflow router calls the provided tools with explicit policy rules:
    - Out-of-network or expired insurance → billing task, **no** slot hold
    - In-network referral → find slots, optionally hold one for staff review
@@ -147,6 +147,7 @@ If the API key is missing or the LLM returns bad JSON, regex-based extraction an
 | Guardian on file doesn't match message sender | `guardianMismatch()` flag passed into synthesis | Always compare `search_patient` result vs message contact |
 | Runtime is slow (~1–2 min) | Sequential processing, 2 LLM calls per item | Parallel extraction across items; cache policy text |
 | Over-escalating routine messages | Default P2; only code forces P0 (safeguarding) and P1 (same-day) | Monitor urgency distribution in production |
+| `[blank]` on one fax field flags unrelated gaps in `missing_info` | `detectMissingInfo` matches per-field markers (`DOB: [blank]`, etc.) | Broader tests for partial and malformed referrals |
 
 ### 5. What I chose not to build, and why
 
