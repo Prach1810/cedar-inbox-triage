@@ -92,7 +92,7 @@ Draft replies should be clear, empathetic, concise, and operationally useful. Th
 
 ---
 
-## Solution (Prachi Singh)
+## Solution
 
 Built with Cursor (Claude). The agent uses a **hybrid** design: the LLM understands each message, TypeScript code decides which tools to call, and the LLM writes the final draft and rationale from those tool results.
 
