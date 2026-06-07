@@ -23,6 +23,9 @@ async function main(): Promise<void> {
   const outputPath = resolve(process.cwd(), args.output);
   mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, `${JSON.stringify(output, null, 2)}\n`);
+  console.log(
+    `Triage complete: wrote ${args.output} (${output.items.length} items, P0=${output.summary.p0_count}, P1=${output.summary.p1_count})`,
+  );
 }
 
 function parseCliArgs(argv: string[]): CliArgs {
