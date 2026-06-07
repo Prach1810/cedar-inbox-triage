@@ -100,7 +100,7 @@ Built with Cursor (Claude). The agent uses a **hybrid** design: the LLM understa
 
 ```bash
 npm install
-export ANTHROPIC_API_KEY=your_key   # or add to .env (do not commit)
+export ANTHROPIC_API_KEY=your_key   # or add to .env
 npm run triage   -- --input data/inbox.json --output output.json --trace .trace/tool-calls.jsonl
 npm run validate -- --input data/inbox.json --output output.json --trace .trace/tool-calls.jsonl
 npm run typecheck
